@@ -27,7 +27,8 @@
     "@nuxtjs/auth-next": "^5.0.0-1607693598.34d83ea",
     "@nuxtjs/axios": "^5.12.3",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "nuxt-typed-vuex": "^0.1.22"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
