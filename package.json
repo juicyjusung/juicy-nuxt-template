@@ -27,7 +27,7 @@
     "@nuxtjs/auth-next": "^5.0.0-1607967355.df8f01e",
     "@nuxtjs/axios": "^5.12.3",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6",
+    "nuxt": "^2.14.12",
     "nuxt-typed-vuex": "^0.1.22",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"
