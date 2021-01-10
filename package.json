@@ -1,7 +1,8 @@
 {
-  "name": "juicy-nuxt-template",
+  "name": "juicy-nuxt-boilerplate",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://github.com/juicyjusung/juicy-nuxt-boilerplate",
   "scripts": {
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
