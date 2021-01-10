@@ -1,4 +1,24 @@
-# juicy-nuxt-template
+# juicy-nuxt-boilerplate
+
+## Project Description
+
+![localhost_8000_ (1)](https://user-images.githubusercontent.com/46892438/104125880-d34d6380-539c-11eb-93de-30638c0ca6e9.png)
+
+
+
+nuxt(typesciprt) practice 및 boilerplate
+
+
+- [x] typescript
+- [x] vuetify
+
+- [x] jest
+- [x] linter => eslint, prettier - husky pre-commit hook
+- [x] commitlint 
+- [x] github actions ci
+- [x] dependabot
+- [ ] dockerize
+- [ ] demo
 
 ## Build Setup
 
@@ -17,4 +37,7 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+### env (.env)
+```bash .env
+BASE_URL={{base_url}}
+```
