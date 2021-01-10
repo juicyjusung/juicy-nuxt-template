@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  layout: 'empty',
+  layout: 'Empty.vue',
   props: {
     error: {
       type: Object,

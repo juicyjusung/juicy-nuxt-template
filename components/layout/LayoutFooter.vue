@@ -1,5 +1,7 @@
 <template>
-  <h1>Scaffold</h1>
+  <v-footer :absolute="absolute" app>
+    <span>&copy; {{ new Date().getFullYear() }}</span>
+  </v-footer>
 </template>
 
 <script lang="ts">
@@ -8,32 +10,23 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 @Component({
   components: {},
 })
-export default class Inspire extends Vue {
+export default class LayoutHeader extends Vue {
   /*********************************************************************************
    * Prop & Variable & computed
    * ******************************************************************************/
-  @Prop({ type: String, default: '' }) value!: string;
+  @Prop({ type: Boolean, default: false }) absolute!: boolean;
+
   /*********************************************************************************
    * Store
    * ******************************************************************************/
-  // get email() {
-  //   return this.$accessor.email;
-  // }
-  //
-  // setEmail() {
-  //   this.$accessor.setEmail('testEmail');
-  // }
-  //
-  // setName() {
-  //   this.$accessor.submodule.setName('juicyjusung');
-  // }
+
   /*********************************************************************************
    * Emit
    * ******************************************************************************/
+
   /*********************************************************************************
    * Life Cycles
    * ******************************************************************************/
-  created() {}
   /*********************************************************************************
    * Methods
    * ******************************************************************************/

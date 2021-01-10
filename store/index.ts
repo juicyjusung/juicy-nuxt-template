@@ -1,7 +1,8 @@
 import { getStoreType, getAccessorType, mutationTree, actionTree } from 'nuxt-typed-vuex';
 import { Context } from '@nuxt/types';
 
-import * as submodule from './submodule';
+import * as todoStore from './todoStore';
+import * as userStore from './userStore';
 
 export const state = () => ({
   email: '',
@@ -31,7 +32,7 @@ export const actions = actionTree(
       await commit('setEmail', 'a@a.com');
     },
     async nuxtServerInit(_vuexContext, nuxtContext: Context) {
-      console.log('%c [JL] nuxtServerInit - nuxtContext.req', 'font-size: 16px; color:  red;', nuxtContext.req);
+      // console.log('%c [JL] nuxtServerInit - nuxtContext.req', 'font-size: 16px; color:  red;', nuxtContext.req);
     },
   }
 );
@@ -42,6 +43,7 @@ export const accessorType = getAccessorType({
   mutations,
   state,
   modules: {
-    submodule,
+    todoStore,
+    userStore,
   },
 });

@@ -5,15 +5,17 @@ export const state = () => ({
   lastName: '',
 });
 
+export type State = ReturnType<typeof state>;
+
 export const getters = getterTree(state, {
   fullName: state => state.firstName + ' ' + state.lastName,
 });
 
 export const mutations = mutationTree(state, {
-  setFirstName(state, newValue: string) {
+  SET_FIRST_NAME(state, newValue: string) {
     state.firstName = newValue;
   },
-  setLastName(state, newValue: string) {
+  SET_LAST_NAME(state, newValue: string) {
     state.lastName = newValue;
   },
 });
@@ -22,13 +24,13 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     initialise({ commit }) {
-      commit('setFirstName', 'John');
-      commit('setLastName', 'Baker');
+      commit('SET_FIRST_NAME', 'John');
+      commit('SET_LAST_NAME', 'Baker');
     },
     setName({ commit }, newName: string) {
       const names = newName.split(' ');
-      commit('setFirstName', names[0]);
-      if (names.length > 1) commit('setLastName', names[1]);
+      commit('SET_FIRST_NAME', names[0]);
+      if (names.length > 1) commit('SET_LAST_NAME', names[1]);
     },
   }
 );
