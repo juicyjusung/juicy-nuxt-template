@@ -15,18 +15,42 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
+  styleResources: {
+    scss: [
+      './assets/styles/global.scss', // use underscore "_" & also file extension ".scss"
+    ],
+  },
 
+  pageTransition: {
+    name: 'page',
+    mode: 'out-in',
+  },
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['@/plugins/axios-accessor.ts'],
+  plugins: [
+    '@/plugins/axios-accessor.ts',
+    '@/plugins/vee-validate.ts',
+    { src: '@/plugins/vue-notification.ts', ssr: false },
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module', '@nuxtjs/vuetify', 'nuxt-typed-vuex', '@nuxtjs/dotenv'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/stylelint-module',
+    '@nuxtjs/vuetify',
+    'nuxt-typed-vuex',
+    '@nuxtjs/dotenv',
+  ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/style-resources'],
+
+  router: {
+    middleware: ['auth'],
+  },
+
   dotenv: {
     systemvars: true,
   },
@@ -53,10 +77,37 @@ export default {
       },
     },
   },
-
+  server: {
+    port: 8000,
+  },
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'accessToken',
+          type: 'Bearer',
+        },
+        user: {
+          property: [],
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'accessToken' },
+          logout: { url: '/auth/logout', method: 'get' },
+          user: { url: '/auth/whoami', method: 'get', property: '' },
+        },
+      },
+    },
+    redirect: {
+      logout: '/login',
+      home: '/',
+      signup: '/',
+    },
+    watchLoggedIn: true,
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    transpile: [/typed-vuex/],
+    transpile: [/typed-vuex/, 'vee-validate/dist/rules'],
     extend(config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map';
     },

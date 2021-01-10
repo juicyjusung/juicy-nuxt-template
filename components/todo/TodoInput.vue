@@ -1,42 +1,54 @@
 <template>
-  <h1>Scaffold</h1>
+  <v-card class="pa-0 flex-grow-1 d-flex">
+    <v-icon color="primary" class="mx-4">mdi-check</v-icon>
+    <v-text-field
+      v-model="newTodo.title"
+      :label="'New todo input'"
+      autofocus
+      autocomplete="off"
+      clearable
+      color="primary"
+      flat
+      hide-details
+      maxlength="1023"
+      placeholder="What needs to be done?"
+      solo
+      @keydown.enter="addTodo"
+    ></v-text-field>
+  </v-card>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator';
+import { TodoInput } from '~/entity/todo';
 
 @Component({
   components: {},
 })
-export default class Inspire extends Vue {
+export default class TodoInputC extends Vue {
   /*********************************************************************************
    * Prop & Variable & computed
    * ******************************************************************************/
-  @Prop({ type: String, default: '' }) value!: string;
+  newTodo = new TodoInput();
+
   /*********************************************************************************
    * Store
    * ******************************************************************************/
-  // get email() {
-  //   return this.$accessor.email;
-  // }
-  //
-  // setEmail() {
-  //   this.$accessor.setEmail('testEmail');
-  // }
-  //
-  // setName() {
-  //   this.$accessor.submodule.setName('juicyjusung');
-  // }
+
   /*********************************************************************************
    * Emit
    * ******************************************************************************/
+
   /*********************************************************************************
    * Life Cycles
    * ******************************************************************************/
-  created() {}
   /*********************************************************************************
    * Methods
    * ******************************************************************************/
+  async addTodo() {
+    await this.$accessor.todoStore.addTodo(this.newTodo);
+    this.newTodo = new TodoInput();
+  }
 }
 </script>
 

@@ -1,0 +1,15 @@
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.15s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+
+.hello {
+  color: red;
+}
+.hi {
+  background-color: #3b8070;
+}
