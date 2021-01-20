@@ -1,5 +1,8 @@
-import { getterTree, mutationTree, actionTree } from 'nuxt-typed-vuex';
+import { Module, MutationAction, VuexModule } from 'vuex-module-decorators';
 import { OptionalPick, ResponseType, Todo } from '~/types';
+import { TodoInput } from '~/entity/todo';
+import { $axios } from '~/utils/axios';
+import { todoStore } from '~/utils/store-accessor';
 
 export type CreateTodoRequest = Pick<Todo, 'title'> & OptionalPick<Todo, 'desc'>;
 export type UpdateTodoRequest = OptionalPick<Todo, 'title' | 'desc' | 'status' | 'id'>;
@@ -23,56 +26,52 @@ const filters: TodoListFilter = {
   COMPLETED: (todos: Todo[]) => todos.filter((todo: Todo) => todo.status),
 };
 
-export const getters = getterTree(state, {
-  getTodos: (state: TodoState) => state.todos,
-  activeTodos: (state: TodoState) => state.todos.filter(todo => !todo.status),
-  completedTodos: (state: TodoState) => state.todos.filter(todo => todo.status),
-});
+@Module({
+  namespaced: true,
+  name: 'todoStore',
+  stateFactory: true,
+})
+export default class TodoModule extends VuexModule {
+  todos: Array<Todo> = [];
 
-export const mutations = mutationTree(state, {
-  SET_TODOS(state, todos: Todo[]) {
-    state.todos = todos;
-  },
-  ADD_TODO(state, todo: TodoResponse) {
-    state.todos.push(todo);
-  },
-  UPDATE_TODO(state, todo: TodoResponse) {
-    const index = state.todos.findIndex(sTodo => sTodo.id === todo.id);
-    state.todos = [
-      ...state.todos.slice(0, index),
-      todo,
-      ...state.todos.slice(index + 1, state.todos.length),
-    ];
-  },
-  DELETE_TODO(state, todo: TodoResponse) {
-    state.todos = state.todos.filter(sTodo => sTodo !== todo);
-  },
-});
-
-export const actions = actionTree(
-  { state, getters, mutations },
-  {
-    async fetchTodos({ commit }) {
-      const res = await this.$axios.get('/todo/list');
-      const todos: TodoResponse[] = res.data;
-      commit('SET_TODOS', todos);
-      return todos;
-    },
-
-    async addTodo({ commit }, todo: CreateTodoRequest) {
-      const res = await this.$axios.post('/todo', todo);
-      const createdTodo: Todo = res.data;
-      commit('ADD_TODO', createdTodo);
-    },
-    async editTodo({ commit }, todo: UpdateTodoRequest) {
-      console.log('%c [JL] editTodo - // TODO: ', 'font-size: 16px; color:  red;', todo);
-      const res = await this.$axios.put('/todo', todo);
-      const updatedTodo: TodoResponse = res.data;
-      commit('UPDATE_TODO', updatedTodo);
-    },
-    async deleteTodo({ commit }, todo: Todo) {
-      await this.$axios.delete(`/todo/${todo.id}`);
-      commit('DELETE_TODO', todo);
-    },
+  @MutationAction({ mutate: ['todos'] })
+  async fetchTodos() {
+    const res = await $axios.get('/todo/list');
+    const todos: Todo[] = res.data;
+    return {
+      todos,
+    };
   }
-);
+
+  @MutationAction({ mutate: ['todos'] })
+  async addTodo(todo: TodoInput) {
+    const res = await $axios.post('/todo', todo.getCreateTodoPayload());
+    const createdTodo: Todo = res.data;
+
+    return {
+      todos: [...todoStore.todos, createdTodo],
+    };
+  }
+
+  @MutationAction({ mutate: ['todos'] })
+  async editTodo(todo: UpdateTodoRequest) {
+    const res = await $axios.put('/todo', todo);
+    const updatedTodo: TodoResponse = res.data;
+    const index = todoStore.todos.findIndex(sTodo => sTodo.id === todo.id);
+    return {
+      todos: [
+        ...todoStore.todos.slice(0, index),
+        updatedTodo,
+        ...todoStore.todos.slice(index + 1, todoStore.todos.length),
+      ],
+    };
+  }
+
+  @MutationAction({ mutate: ['todos'] })
+  async removeTodo(todo: Todo) {
+    await $axios.delete(`/todo/${todo.id}`);
+    return {
+      todos: todoStore.todos.filter(sTodo => sTodo.id !== todo.id),
+    };
+  }
+}

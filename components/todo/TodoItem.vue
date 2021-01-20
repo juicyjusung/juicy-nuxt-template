@@ -46,6 +46,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { Todo } from '~/types';
+import { todoStore } from '~/store';
 
 @Component({
   components: {},
@@ -65,19 +66,19 @@ export default class TodoItem extends Vue {
   }
 
   removeTodo(todo: Todo) {
-    this.$accessor.todoStore.deleteTodo(todo);
+    todoStore.removeTodo(todo);
   }
 
   updateText(e: { target: HTMLInputElement }, todo: Todo) {
     if (this.editing) {
       const newText = e.target.value;
-      this.$accessor.todoStore.editTodo({ ...todo, title: newText });
+      todoStore.editTodo({ ...todo, title: newText });
       this.editing = false;
     }
   }
 
   updateStatus(todo: Todo, done: boolean) {
-    this.$accessor.todoStore.editTodo({ ...todo, status: done || false });
+    todoStore.editTodo({ ...todo, status: done || false });
   }
 }
 </script>

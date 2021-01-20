@@ -1,6 +1,7 @@
 import { Context, Plugin } from '@nuxt/types';
 import { eventHub } from '~/utils/evnetHub';
 import { ErrorType } from '~/constants';
+import { initializeAxios } from '~/utils/axios';
 
 const accessor: Plugin = ({ $axios, redirect, app }: Context) => {
   $axios.interceptors.request.use(
@@ -47,9 +48,11 @@ const accessor: Plugin = ({ $axios, redirect, app }: Context) => {
     }
 
     if (code === ErrorType.NotFound) {
-      redirect('/');
+      // redirect('/');
+      return Promise.reject(error.response.data.errors);
     }
   });
+  initializeAxios($axios);
 };
 
 export default accessor;

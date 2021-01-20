@@ -9,17 +9,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import { todoStore } from '~/store';
 
 @Component({
   components: {},
-  async fetch({ app: { $accessor } }) {
-    await $accessor.todoStore.fetchTodos();
+  async fetch() {
+    await todoStore.fetchTodos();
   },
   async asyncData() {},
 })
 export default class Home extends Vue {
   get todos() {
-    return this.$accessor.todoStore.getTodos;
+    return todoStore.todos;
   }
 }
 </script>

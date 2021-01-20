@@ -6,16 +6,14 @@ export interface User {
   updatedOn: string;
 }
 
-export type TodoStatus = 'todo' | 'inProgress' | 'done';
-
 export interface Todo {
   title: string;
   desc: string;
   author: string;
   id: string;
   status: boolean;
-  createdOn: string;
-  updatedOn: string;
+  createdOn?: string;
+  updatedOn?: string;
 }
 
 export type ResponseType<K extends string, V> = Promise<{ [P in K]: V }>;

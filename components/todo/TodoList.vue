@@ -19,7 +19,7 @@
       </v-btn-toggle>
     </v-card-actions>
     <v-list class="pa-0">
-      <todo-item v-for="todo in filteredTodos" :key="`ti-${todo.id}`" :todo="todo" />
+      <todo-item v-for="(todo, i) in filteredTodos" :key="`ti-${todo.id}${i}`" :todo="todo" />
     </v-list>
   </v-card>
 </template>
