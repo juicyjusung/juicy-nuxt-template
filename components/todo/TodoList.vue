@@ -53,7 +53,10 @@ export default class TodoList extends Vue {
 
   get filteredTodos(): Todo[] {
     return [...this.filters[this.tab](this.todos)]
-      .sort((a, z) => new Date(a.createdOn).getTime() - new Date(z.createdOn).getTime())
+      .sort(
+        (a, z) =>
+          new Date(a.createdOn as string).getTime() - new Date(z.createdOn as string).getTime()
+      )
       .sort((a, z) => (a.status === z.status ? 0 : z.status ? -1 : 1));
   }
 
